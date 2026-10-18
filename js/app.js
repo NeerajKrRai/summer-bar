@@ -51,6 +51,8 @@ const SM={
 function go(id){
   // any manual navigation cancels a pending auto-advance (boot splash, post-save return)
   if(autoNavTimer){clearTimeout(autoNavTimer);autoNavTimer=null;}
+  // dismiss any open bottom-sheet so it can never be stranded on top of another screen
+  ['strawModal','herbModal','teaModal'].forEach(mid=>{const el=document.getElementById(mid);if(el)el.classList.remove('on');});
   document.querySelectorAll('.sc').forEach(s=>s.classList.remove('on'));
   document.getElementById(id).classList.add('on');
   curSc=id;
