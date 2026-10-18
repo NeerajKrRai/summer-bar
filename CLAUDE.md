@@ -5,7 +5,7 @@ Kawaii make-believe cocktail-maker app built by **Neeksha (age 8)** with Claude;
 ## Read first
 
 - **This file** is current; **`COMPLIANCE.md`** is the Play-launch runbook; **`store-assets/LISTING.md`** has the store copy/assets.
-- **`HANDOVER_for_Neeraj.md`** is the original handover from Neeksha's sessions — good for feature intent and history, but it describes the retired single-file era (pre-`www/`, pre-fixes); where it disagrees with this file, this file wins.
+- **`HANDOVER_for_Neeraj.md`** (the original handover from Neeksha's sessions — feature intent + history, but describes the retired single-file era; this file wins on any conflict) is kept **local-only / gitignored** now, out of the public repo; recover it from git history if needed (`git log --all --oneline -- HANDOVER_for_Neeraj.md`).
 
 ## Hard constraints
 

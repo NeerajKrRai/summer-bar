@@ -12,3 +12,6 @@ android/app/release/
 *.keystore
 *.jks
 keystore.properties
+
+# internal handover notes — kept local, not published to the public repo
+HANDOVER_for_Neeraj.md
