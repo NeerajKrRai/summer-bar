@@ -9,6 +9,9 @@ function reqTilt(){
 function listenTilt(){
   window.addEventListener('deviceorientation',e=>{
     if(curSc!=='sDrink')return;
+    // the straw picker auto-opens over the drink — don't drain the cup behind it
+    const sm=document.getElementById('strawModal');
+    if(sm&&sm.classList.contains('on'))return;
     const t=Math.abs(e.gamma||0);
     if(t>28&&Date.now()-lastTilt>900){lastTilt=Date.now();takeSip();}
   },{passive:true});

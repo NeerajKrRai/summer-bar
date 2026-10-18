@@ -50,6 +50,7 @@ function spawnFlakes(){
 // ── SWITCH ────────────────────────────────────────
 let swCnt=0;
 function resetSwitch(){
+  if(autoNavTimer){clearTimeout(autoNavTimer);autoNavTimer=null;}
   swCnt=0;
   const sw=document.getElementById('swTrk');
   if(sw)sw.className='sw-trk';
@@ -57,6 +58,8 @@ function resetSwitch(){
   if(h)h.textContent='0 / 2 clicks';
 }
 function clickSw(){
+  // a fresh tap cancels any armed auto-advance so re-tapping can't yank you to the Pantry
+  if(autoNavTimer){clearTimeout(autoNavTimer);autoNavTimer=null;}
   if(swCnt>=2)resetSwitch();
   swCnt++;
   const sw=document.getElementById('swTrk');
