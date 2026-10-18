@@ -1,6 +1,8 @@
-// Neeksha's Summer Bar — offline-first service worker.
-// Everything is local and static: cache-first with a versioned precache.
-const CACHE = 'summer-bar-v2';
+// Neeksha's Summer Bar — offline-capable service worker.
+// Strategy: network-first for code (HTML/CSS/JS) so updates land immediately
+// when online; cache-first for fonts/icons (they rarely change) for speed.
+// Either way the app works fully offline from the precache.
+const CACHE = 'summer-bar-v3';
 const ASSETS = [
   './',
   './index.html',
@@ -34,17 +36,35 @@ self.addEventListener('activate', e => {
   );
 });
 
+// fonts and icons: content-stable, cache-first
+const CACHE_FIRST = /\.(?:woff2|png|ico|svg)$/i;
+
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
+  const url = new URL(e.request.url);
+
+  if (CACHE_FIRST.test(url.pathname)) {
+    e.respondWith(
+      caches.match(e.request, { ignoreSearch: true }).then(hit =>
+        hit || fetch(e.request).then(res => {
+          const copy = res.clone();
+          caches.open(CACHE).then(c => c.put(e.request, copy));
+          return res;
+        })
+      )
+    );
+    return;
+  }
+
+  // code + navigations: network-first, fall back to cache when offline
   e.respondWith(
-    caches.match(e.request, { ignoreSearch: true }).then(hit =>
-      hit ||
-      fetch(e.request).then(res => {
-        const copy = res.clone();
-        caches.open(CACHE).then(c => c.put(e.request, copy));
-        return res;
-      }).catch(() =>
-        e.request.mode === 'navigate' ? caches.match('./index.html') : Response.error()
+    fetch(e.request).then(res => {
+      const copy = res.clone();
+      caches.open(CACHE).then(c => c.put(e.request, copy));
+      return res;
+    }).catch(() =>
+      caches.match(e.request, { ignoreSearch: true }).then(hit =>
+        hit || (e.request.mode === 'navigate' ? caches.match('./index.html') : Response.error())
       )
     )
   );
