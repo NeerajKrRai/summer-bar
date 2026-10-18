@@ -2,7 +2,7 @@
 // Strategy: network-first for code (HTML/CSS/JS) so updates land immediately
 // when online; cache-first for fonts/icons (they rarely change) for speed.
 // Either way the app works fully offline from the precache.
-const CACHE = 'summer-bar-v4';
+const CACHE = 'summer-bar-v5';
 const ASSETS = [
   './',
   './index.html',
